@@ -5,10 +5,8 @@ decide what is worth building, track the real cost of AI initiatives, and measur
 whether they deliver value.
 
 Stack: **Next.js 14 (App Router) · React 18 · TypeScript · Tailwind CSS · Framer Motion**.
-Self-contained — it does not share code or dependencies with the ROAM app in the repo root.
 
 ```bash
-cd concept-site
 npm install
 npm run dev        # http://localhost:3100
 npm run build && npm start
