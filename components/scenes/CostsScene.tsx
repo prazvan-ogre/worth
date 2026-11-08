@@ -182,10 +182,70 @@ function CostBoard() {
   );
 }
 
+const LAUNCHES = [
+  { name: "Support Assistant", cost: 9800, hours: 22 },
+  { name: "Proposal Writer", cost: 2400, hours: 8 },
+  { name: "Invoice Matcher", cost: 1100, hours: 6 },
+  { name: "Smart Search", cost: 900, hours: 5 },
+  { name: "Meeting Notes Agent", cost: 1240, hours: 4 },
+  { name: "Onboarding Hub", cost: 700, hours: 6 },
+  { name: "Churn Predictor", cost: 1600, hours: 9 },
+  { name: "Contract Q&A Bot", cost: 2100, hours: 7 },
+];
+
+/** More launches → a growing, permanent running bill and maintenance load. */
+function Commitments() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { amount: 0.5, once: true });
+  const tick = useTicker(700, inView);
+  const count = inView ? Math.min(LAUNCHES.length, 1 + tick) : 0;
+  const live = LAUNCHES.slice(0, count);
+  const monthly = live.reduce((a, l) => a + l.cost, 0);
+  const hours = live.reduce((a, l) => a + l.hours, 0);
+
+  return (
+    <div ref={ref} className="mt-4 rounded-xl2 border border-line bg-paper p-5 shadow-card">
+      <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <p className="text-[11px] text-ink-muted">Launched and still running</p>
+          <p className="text-[22px] font-semibold tracking-tight">
+            {count} <span className="text-[14px] font-normal text-ink-muted">initiatives</span>
+          </p>
+        </div>
+        <div className="flex gap-6 text-right">
+          <div>
+            <p className="text-[11px] text-ink-muted">Running cost / month</p>
+            <p className="font-mono text-[15px] tabular-nums text-ink">${monthly.toLocaleString("en-US")}</p>
+          </div>
+          <div>
+            <p className="text-[11px] text-ink-muted">Upkeep / month</p>
+            <p className="font-mono text-[15px] tabular-nums text-ink">{hours} h</p>
+          </div>
+        </div>
+      </div>
+      <div className="flex min-h-[64px] flex-wrap content-start gap-1.5">
+        {live.map((l) => (
+          <motion.span
+            key={l.name}
+            initial={{ opacity: 0, scale: 0.8, y: 6 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ type: "spring", stiffness: 260, damping: 20 }}
+            className="inline-flex items-center gap-1.5 rounded-full border border-line bg-canvas px-2.5 py-1 text-[11.5px] text-ink-soft"
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+            {l.name}
+          </motion.span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function CostsScene() {
   return (
     <Scene scene={sceneById("costs")} layout="reverse">
       <CostBoard />
+      <Commitments />
     </Scene>
   );
 }

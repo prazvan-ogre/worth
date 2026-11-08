@@ -4,11 +4,11 @@ import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Worth — Build what matters",
+  title: "Worth — Build only what matters",
   description:
     "It’s never been easier to build anything. Worth helps teams decide what is worth building, track the real cost of AI initiatives, and measure whether they deliver value.",
   openGraph: {
-    title: "Worth — Build what matters",
+    title: "Worth — Build only what matters",
     description: "Decide what is worth building. Track what it costs. Measure what it delivers.",
     type: "website",
   },

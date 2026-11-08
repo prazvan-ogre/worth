@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useInView } from "framer-motion";
-import { Copy, Rocket, Sparkles, TrendingUp, Archive, Combine, Wrench, Target, Activity } from "lucide-react";
+import { Copy, Rocket, Sparkles, TrendingUp, Archive, Combine, Wrench, Target, Activity, Timer, CheckCircle2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Scene } from "@/components/ui/Scene";
 import { Avatar, Pill, Sparkline, Window, useTicker } from "@/components/ui/primitives";
@@ -9,45 +9,63 @@ import { PRODUCT, sceneById } from "@/lib/story";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-type Decision = "Expand" | "Improve" | "Combine" | "Retire";
+type Decision = "Improve" | "Scale" | "Combine" | "Retire";
 const DECISIONS: { key: Decision; icon: typeof Rocket }[] = [
-  { key: "Expand", icon: Rocket },
   { key: "Improve", icon: Wrench },
+  { key: "Scale", icon: Rocket },
   { key: "Combine", icon: Combine },
   { key: "Retire", icon: Archive },
 ];
 
 const ALERTS: {
   icon: typeof Copy;
+  tone: "warn" | "ok";
   title: string;
   item: string;
-  evidence: string;
+  expected: string;
+  actual: string;
   spark: number[];
   suggested: Decision;
 }[] = [
   {
-    icon: Copy,
-    title: "Another team already uses a similar agent.",
-    item: "Contract Q&A Bot · Legal",
-    evidence: "86% overlap with Proposal Writer · both cost $2.1k/mo",
-    spark: [4, 5, 5, 6, 6, 7, 7, 8],
-    suggested: "Combine",
-  },
-  {
     icon: TrendingUp,
-    title: "Running costs are rising. Usage is unchanged.",
+    tone: "warn",
+    title: "Running costs are increasing, but usage remains unchanged.",
     item: "Meeting Notes Agent · Ops",
-    evidence: "Cost +46% in 90 days · 3 weekly users",
+    expected: "40 weekly users",
+    actual: "3 weekly users · cost +46% in 90 days",
     spark: [3, 4, 4, 5, 6, 7, 8, 9],
     suggested: "Retire",
   },
   {
-    icon: Target,
-    title: "The new feature hasn’t yet delivered the expected improvement.",
-    item: "Smart Search · Product",
-    evidence: "Goal: −30% ‘how do I’ tickets · so far −4%",
-    spark: [6, 6, 5, 6, 6, 5, 6, 6],
+    icon: Timer,
+    tone: "warn",
+    title: "This agent has saved less time than expected.",
+    item: "Proposal Writer · Sales",
+    expected: "6 h saved per proposal",
+    actual: "2.5 h saved per proposal",
+    spark: [2, 3, 3, 3, 4, 3, 4, 4],
     suggested: "Improve",
+  },
+  {
+    icon: Copy,
+    tone: "warn",
+    title: "Two teams are using similar solutions.",
+    item: "Contract Q&A Bot · Legal",
+    expected: "One shared tool",
+    actual: "86% overlap with Proposal Writer · both $2.1k/mo",
+    spark: [4, 5, 5, 6, 6, 7, 7, 8],
+    suggested: "Combine",
+  },
+  {
+    icon: CheckCircle2,
+    tone: "ok",
+    title: "This feature has reached its expected adoption target.",
+    item: "Self-serve Billing · Finance",
+    expected: "60% of customers",
+    actual: "64% of customers, 3 weeks early",
+    spark: [1, 2, 3, 4, 5, 6, 7, 8],
+    suggested: "Scale",
   },
 ];
 
@@ -77,20 +95,20 @@ function Monitor() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { amount: 0.4 });
   const [shown, setShown] = useState(0);
-  const [decided, setDecided] = useState<(Decision | null)[]>([null, null, null]);
+  const [decided, setDecided] = useState<(Decision | null)[]>(ALERTS.map(() => null));
   const [touched, setTouched] = useState(false);
 
   // alerts arrive one by one, then the team reviews and decides
   useEffect(() => {
     if (!inView) return;
     const timers: number[] = [];
-    ALERTS.forEach((_, i) => timers.push(window.setTimeout(() => setShown((s) => Math.max(s, i + 1)), 600 + i * 1300)));
+    ALERTS.forEach((_, i) => timers.push(window.setTimeout(() => setShown((s) => Math.max(s, i + 1)), 600 + i * 1100)));
     if (!touched) {
       ALERTS.forEach((a, i) =>
         timers.push(
           window.setTimeout(
             () => setDecided((d) => d.map((x, j) => (j === i && !x ? a.suggested : x))),
-            5200 + i * 900,
+            5600 + i * 800,
           ),
         ),
       );
@@ -102,7 +120,7 @@ function Monitor() {
 
   return (
     <div ref={ref}>
-      <Window title={`${PRODUCT.name} · Monitoring`} right={<Pill tone="accent"><Sparkles size={11} /> 3 new signals</Pill>}>
+      <Window title={`${PRODUCT.name} · Monitoring`} right={<Pill tone="accent"><Sparkles size={11} /> 4 new insights</Pill>}>
         <LiveStrip active={inView} />
         <ul className="space-y-2.5 p-3 sm:p-4">
           <AnimatePresence>
@@ -117,16 +135,22 @@ function Monitor() {
                   className="rounded-xl border border-line bg-paper p-3.5 sm:p-4"
                 >
                   <div className="flex gap-3">
-                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-warn-soft text-warn">
+                    <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg ${a.tone === "ok" ? "bg-ok-soft text-ok" : "bg-warn-soft text-warn"}`}>
                       <Icon size={15} />
                     </span>
                     <div className="min-w-0 flex-1">
                       <p className="text-[13.5px] font-semibold leading-snug">{a.title}</p>
-                      <p className="mt-0.5 text-[11.5px] text-ink-muted">
-                        <span className="text-ink-soft">{a.item}</span> · {a.evidence}
+                      <p className="mt-0.5 text-[11.5px] text-ink-soft">{a.item}</p>
+                      <p className="mt-1.5 flex flex-wrap gap-x-3 gap-y-0.5 text-[11.5px]">
+                        <span className="text-ink-faint">
+                          Expected <span className="text-ink-soft">{a.expected}</span>
+                        </span>
+                        <span className="text-ink-faint">
+                          Actual <span className={a.tone === "ok" ? "text-ok" : "text-warn"}>{a.actual}</span>
+                        </span>
                       </p>
                     </div>
-                    <Sparkline points={a.spark} stroke={i === 1 ? "#D97706" : "#A1A1AA"} className="hidden h-6 w-16 shrink-0 sm:block" />
+                    <Sparkline points={a.spark} stroke={a.tone === "ok" ? "#059669" : i === 0 ? "#D97706" : "#A1A1AA"} className="hidden h-6 w-16 shrink-0 sm:block" />
                   </div>
                   <div className="mt-3 flex flex-wrap gap-1.5 pl-11" role="group" aria-label={`Decision for ${a.item}`}>
                     {DECISIONS.map(({ key, icon: DIcon }) => {
@@ -170,7 +194,7 @@ function Monitor() {
           <AnimatePresence>
             {doneCount === ALERTS.length && (
               <motion.span initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}>
-                <Pill tone="ok">Saves ~$3.3k / month</Pill>
+                <Pill tone="ok">Review complete</Pill>
               </motion.span>
             )}
           </AnimatePresence>
@@ -180,11 +204,10 @@ function Monitor() {
   );
 }
 
-export function AfterScene() {
+export function MeasureScene() {
   return (
     <Scene
-      scene={sceneById("after")}
-      layout="reverse"
+      scene={sceneById("measure")}
       aside={
         <div className="flex flex-wrap gap-2">
           {DECISIONS.map(({ key, icon: Icon }) => (

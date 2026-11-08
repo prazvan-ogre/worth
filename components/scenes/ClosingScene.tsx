@@ -12,10 +12,10 @@ const ease = [0.22, 1, 0.36, 1] as const;
 const scene = sceneById("closing");
 
 const KEEP = [
-  { name: "Support Assistant", goal: "First reply under 2 hours", owner: "MR", hue: 245 },
-  { name: "Proposal Writer", goal: "Proposals in half the time", owner: "JK", hue: 200 },
-  { name: "Invoice Matcher", goal: "Half the matching errors", owner: "LP", hue: 160 },
-  { name: "Onboarding Hub", goal: "New hires ramped in 30 days", owner: "PN", hue: 280 },
+  { name: "Support Assistant", goal: "First reply under 2 hours", outcome: "1 h 40 min today", owner: "MR", hue: 245 },
+  { name: "Proposal Writer", goal: "Proposals in half the time", outcome: "−41% prep time", owner: "JK", hue: 200 },
+  { name: "Invoice Matcher", goal: "Half the matching errors", outcome: "−52% errors", owner: "LP", hue: 160 },
+  { name: "Onboarding Hub", goal: "New hires ramped in 30 days", outcome: "36 days, improving", owner: "PN", hue: 280 },
 ];
 
 const NOISE = [
@@ -98,7 +98,10 @@ function Portfolio() {
                       <div className="mt-4 flex items-center gap-2 border-t border-line-soft pt-3">
                         <Avatar initials={k.owner} hue={k.hue} />
                         <span className="text-[11px] text-ink-faint">Owner</span>
-                        <span className="ml-auto h-1.5 w-1.5 rounded-full bg-ok" />
+                        <span className="ml-auto inline-flex items-center gap-1.5 font-mono text-[11px] text-ok">
+                          <span className="h-1.5 w-1.5 rounded-full bg-ok" />
+                          {k.outcome}
+                        </span>
                       </div>
                     </motion.div>
                   </motion.div>
@@ -110,7 +113,7 @@ function Portfolio() {
       </LayoutGroup>
 
       <div className="mt-6 flex items-center justify-center gap-4 font-mono text-[11px] text-ink-faint">
-        <span>{focused ? `${KEEP.length} initiatives · each with a goal and an owner` : `${ALL.length} initiatives · unclear goals`}</span>
+        <span>{focused ? `${KEEP.length} initiatives · each with a goal, an owner and a measured outcome` : `${ALL.length} initiatives · unclear goals`}</span>
         {focused && (
           <button
             type="button"
@@ -148,6 +151,15 @@ export function ClosingScene() {
         <Portfolio />
 
         <div className="mx-auto mt-32 max-w-4xl text-center sm:mt-40">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, amount: 0.6 }}
+            transition={{ duration: 1.2, ease }}
+            className="mb-10 flex justify-center"
+          >
+            <Logo className="scale-150 text-ink" />
+          </motion.div>
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -165,7 +177,7 @@ export function ClosingScene() {
             transition={{ duration: 1.4, ease, delay: 0.3 }}
             className="mt-8 text-display font-semibold"
           >
-            Build what <span className="text-gradient">matters.</span>
+            Build only what <span className="text-gradient">matters.</span>
           </motion.h2>
         </div>
 
@@ -182,7 +194,7 @@ export function ClosingScene() {
           <div className="relative">
             <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.16em] text-accent-glow">{PRODUCT.status}</p>
             <h3 className="mx-auto max-w-2xl text-balance text-[clamp(1.8rem,3.6vw,3rem)] font-semibold leading-[1.05] tracking-[-0.035em]">
-              Want to explore this with your team? Let’s talk.
+              Want to explore Worth with your team? Let’s talk.
             </h3>
             <p className="mx-auto mt-5 max-w-lg text-[15px] leading-relaxed text-paper/60">
               We’re shaping {PRODUCT.name} with a small group of product, innovation and operations teams. Thirty minutes, no slides.

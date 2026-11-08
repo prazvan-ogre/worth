@@ -8,9 +8,10 @@ import { OpeningScene } from "@/components/scenes/OpeningScene";
 import { CompetitionScene } from "@/components/scenes/CompetitionScene";
 import { CostsScene } from "@/components/scenes/CostsScene";
 import { ValueScene } from "@/components/scenes/ValueScene";
-import { PlatformScene } from "@/components/scenes/PlatformScene";
-import { BeforeScene } from "@/components/scenes/BeforeScene";
-import { AfterScene } from "@/components/scenes/AfterScene";
+import { MeetScene } from "@/components/scenes/MeetScene";
+import { ClarifyScene } from "@/components/scenes/ClarifyScene";
+import { FocusScene } from "@/components/scenes/FocusScene";
+import { MeasureScene } from "@/components/scenes/MeasureScene";
 import { ClosingScene } from "@/components/scenes/ClosingScene";
 
 export function Story() {
@@ -26,9 +27,10 @@ export function Story() {
             <CompetitionScene />
             <CostsScene />
             <ValueScene />
-            <PlatformScene />
-            <BeforeScene />
-            <AfterScene />
+            <MeetScene />
+            <ClarifyScene />
+            <FocusScene />
+            <MeasureScene />
             <ClosingScene />
           </main>
         </FilmProvider>

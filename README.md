@@ -12,18 +12,19 @@ npm run dev        # http://localhost:3100
 npm run build && npm start
 ```
 
-## The story (8 scenes)
+## The story (9 scenes, 4 parts)
 
-| # | Scene | Visual |
+| Part | Scene | Visual |
 |---|---|---|
-| 1 | It’s never been easier to build anything… | A prompt types itself, becomes a live app, an AI agent spins up, features burst around it |
-| 2 | Every new idea competes for the same resources | A shared backlog that keeps re-ordering; duplicates flagged, work put on hold, capacity meters near 100% |
-| 3 | The costs don’t stop at launch | Cost-of-ownership chart: build cost, then stacked running costs (tokens, cloud, subscriptions, support, maintenance) |
-| 4 | More features don’t automatically mean more value | Analytics: shipped features ×4 vs. flat usage (“the value gap”) and an idle agent still costing money |
-| 5 | A shared view of what we build and maintain | The platform reveal: integrations flow into a portfolio with purpose, owner, usage, cost, results; click a row to see the three questions |
-| 6 | Before you build: check, compare, and choose | Idea → compare with existing tools → goal / budget / review date → reuse · experiment · build |
-| 7 | After launch: check whether the investment is paying off | Live monitoring with the three alerts, then the team decides: expand · improve · combine · retire |
-| 8 | Build what matters | A crowded portfolio collapses into four focused initiatives with goals and owners, then the CTA |
+| The problem | It’s never been easier to build anything. But is everything worth building? | A prompt becomes a live app, an AI agent spins up, features burst around it |
+| | Every new idea competes for the same resources. | A shared backlog that keeps re-ordering; new work jumps the queue, other work is put on hold |
+| | And every launch comes with a long-term commitment. | One launch’s running costs (tokens, cloud, subscriptions, support, maintenance), then more launches piling up |
+| | But how much of what we build actually delivers value? | Features shipped ×4 against flat usage, and an idle agent that still costs money |
+| Introducing Worth | Meet Worth — make better decisions about what to build, keep, and improve. | The portfolio inside Worth: proposed and live apps, agents and features with goals, owners, costs and outcomes; Clarify · Focus · Measure |
+| How Worth works | Clarify. Before you build, know why. | Idea → problem, solution, outcome, effort → similar work to reuse → proposal ready for evaluation |
+| | Focus. Put your resources where they matter most. | Portfolio review: compare by value or cost, decide start / continue / put on hold / stop, watch the budget |
+| | Measure. Did it deliver what you expected? | Expected vs. actual insights, then improve / scale / combine / retire |
+| Closing | Build only what matters. | A crowded portfolio collapses into a few initiatives with goals, owners and outcomes; the Worth brand; the call to action |
 
 ## Where to change things
 
@@ -44,7 +45,7 @@ When the film is ready, set `FILM.src` in `lib/story.ts`:
 
 A “Watch the film” button then appears in the opening scene and plays the film
 full-screen in a modal (Esc or click outside to close). Each scene’s `narration`
-field in `lib/story.ts` is the voice-over script for the film.
+field in `lib/story.ts` is both the on-screen story text and the film’s voice-over script.
 
 ## Accessibility & motion
 

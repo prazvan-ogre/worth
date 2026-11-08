@@ -17,6 +17,20 @@ export const reveal = {
   }),
 };
 
+/**
+ * Headlines that open with a one-word step ("Clarify. Before you build, know why.")
+ * show that word in the accent colour on its own line.
+ */
+function Headline({ text }: { text: string }) {
+  const m = text.match(/^([A-Z][a-z]+\.)\s+(.+)$/);
+  if (!m) return <>{text}</>;
+  return (
+    <>
+      <span className="block text-accent">{m[1]}</span> {m[2]}
+    </>
+  );
+}
+
 /** Marks a section as the active scene while it crosses the middle of the viewport. */
 export function useRegisterScene(ref: React.RefObject<HTMLElement>, id: SceneData["id"]) {
   const { setActiveScene } = useScenes();
@@ -32,7 +46,7 @@ type Props = {
   /** split: text left / visual right. reverse: visual left. stacked: text above full-width visual. */
   layout?: "split" | "reverse" | "stacked";
   className?: string;
-  /** Extra content under the lede (chips, links…). */
+  /** Extra content under the story text (chips, links…). */
   aside?: ReactNode;
   /** Centre the text block (used with the stacked layout for reveal moments). */
   center?: boolean;
@@ -55,18 +69,24 @@ export function Scene({ scene, children, layout = "split", className = "", aside
       style={{ y: textDrift }}
       className={`relative z-10 ${center ? "mx-auto max-w-3xl text-center" : "max-w-xl"}`}
     >
+      {scene.eyebrow && (
+        <motion.p
+          variants={reveal}
+          custom={0}
+          className="mb-5 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-faint"
+        >
+          {scene.eyebrow}
+        </motion.p>
+      )}
+      <motion.h2 id={`${scene.id}-title`} variants={reveal} custom={1} className="text-balance text-headline font-semibold text-ink">
+        <Headline text={scene.headline} />
+      </motion.h2>
       <motion.p
         variants={reveal}
-        custom={0}
-        className="mb-5 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-faint"
+        custom={2}
+        className={`mt-6 text-pretty text-[17px] leading-relaxed text-ink-muted ${center ? "mx-auto max-w-2xl" : "max-w-lg"}`}
       >
-        {scene.eyebrow}
-      </motion.p>
-      <motion.h2 id={`${scene.id}-title`} variants={reveal} custom={1} className="text-balance text-headline font-semibold text-ink">
-        {scene.headline}
-      </motion.h2>
-      <motion.p variants={reveal} custom={2} className={`mt-6 max-w-md text-pretty ${center ? "mx-auto max-w-xl" : ""} text-[17px] leading-relaxed text-ink-muted`}>
-        {scene.lede}
+        {scene.narration}
       </motion.p>
       {aside && (
         <motion.div variants={reveal} custom={3} className="mt-8">

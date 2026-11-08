@@ -24,7 +24,7 @@ import { PRODUCT, sceneById } from "@/lib/story";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-type Kind = "Agent" | "App" | "Feature";
+type Kind = "Agent" | "App" | "Feature" | "Proposed";
 type Item = {
   name: string;
   kind: Kind;
@@ -41,6 +41,20 @@ type Item = {
 };
 
 export const PORTFOLIO: Item[] = [
+  {
+    name: "RFP Drafting Agent",
+    kind: "Proposed",
+    purpose: "Answer RFPs in 2 days, not 5",
+    owner: "Dana Okafor",
+    initials: "DO",
+    hue: 20,
+    usage: [0, 0, 0, 0, 0, 0, 0, 0],
+    cost: 0,
+    build: 6000,
+    result: "Awaiting decision",
+    goal: 0,
+    why: "Sales copies answers from old proposals by hand. Goal: cut RFP response time from 5 days to 2.",
+  },
   {
     name: "Support Assistant",
     kind: "Agent",
@@ -127,7 +141,7 @@ export const PORTFOLIO: Item[] = [
   },
 ];
 
-const KIND_ICON = { Agent: Bot, App: AppWindow, Feature: Puzzle } as const;
+const KIND_ICON = { Agent: Bot, App: AppWindow, Feature: Puzzle, Proposed: Lightbulb } as const;
 
 const SOURCES = [
   { label: "Issue tracker", icon: ListChecks },
@@ -183,15 +197,22 @@ function Integrations() {
 
 function Detail({ item }: { item: Item }) {
   const yearCost = item.build + item.cost * 12;
-  const questions = [
-    { icon: Flag, q: "Why did we build it?", a: item.why },
-    {
-      icon: Wallet,
-      q: "How much have we invested?",
-      a: `${money(item.build)} to build · ${money(item.cost)}/month to run · ${money(yearCost)} over 12 months`,
-    },
-    { icon: Target, q: "What have we gained?", a: `${item.result} — ${item.goal}% of the goal reached.` },
-  ];
+  const proposed = item.kind === "Proposed";
+  const questions = proposed
+    ? [
+        { icon: Flag, q: "Why build it?", a: item.why },
+        { icon: Wallet, q: "What will it cost?", a: `Estimated ${money(item.build)} to build, plus running costs once live.` },
+        { icon: Target, q: "What do we expect to gain?", a: "Fewer days per RFP with the same win rate. Reviewed 8 weeks after launch." },
+      ]
+    : [
+        { icon: Flag, q: "Why did we build it?", a: item.why },
+        {
+          icon: Wallet,
+          q: "How much have we invested?",
+          a: `${money(item.build)} to build · ${money(item.cost)}/month to run · ${money(yearCost)} over 12 months`,
+        },
+        { icon: Target, q: "What have we gained?", a: `${item.result} — ${item.goal}% of the goal reached.` },
+      ];
   return (
     <AnimatePresence mode="wait">
       <motion.div
@@ -207,7 +228,7 @@ function Detail({ item }: { item: Item }) {
           <div className="min-w-0">
             <p className="truncate text-[14px] font-semibold">{item.name}</p>
             <p className="text-[11px] text-ink-faint">
-              {item.kind} · owned by {item.owner}
+              {item.kind} · {proposed ? "proposed" : "owned"} by {item.owner}
             </p>
           </div>
         </div>
@@ -228,7 +249,7 @@ function Detail({ item }: { item: Item }) {
             </motion.li>
           ))}
         </ol>
-        <div className="pt-5">
+        <div className={`pt-5 ${proposed ? "hidden" : ""}`}>
           <div className="mb-1.5 flex justify-between text-[11px] text-ink-muted">
             <span>Progress to goal</span>
             <span className="font-mono text-ink">{item.goal}%</span>
@@ -307,7 +328,7 @@ function PortfolioApp() {
             </div>
 
             <div className="flex items-center gap-1 border-b border-line-soft px-3 py-2" role="tablist" aria-label="Filter portfolio">
-              {(["All", "Agent", "App", "Feature"] as const).map((f) => (
+              {(["All", "Proposed", "Agent", "App", "Feature"] as const).map((f) => (
                 <button
                   key={f}
                   role="tab"
@@ -320,7 +341,7 @@ function PortfolioApp() {
                   {filter === f && (
                     <motion.span layoutId="filter-pill" className="absolute inset-0 rounded-full bg-canvas ring-1 ring-line" transition={{ type: "spring", stiffness: 400, damping: 34 }} />
                   )}
-                  <span className="relative">{f === "All" ? "All" : `${f}s`}</span>
+                  <span className="relative">{f === "All" || f === "Proposed" ? f : `${f}s`}</span>
                 </button>
               ))}
             </div>
@@ -338,7 +359,8 @@ function PortfolioApp() {
                 {rows.map((p) => {
                   const Icon = KIND_ICON[p.kind];
                   const isSel = p.i === selected;
-                  const weak = p.goal < 25;
+                  const proposedRow = p.kind === "Proposed";
+                  const weak = p.goal < 25 && !proposedRow;
                   return (
                     <motion.li
                       layout
@@ -378,9 +400,13 @@ function PortfolioApp() {
                         <span className="hidden md:block">
                           <Sparkline points={p.usage} stroke={weak ? "#A1A1AA" : "#4F46E5"} className="h-5 w-16" />
                         </span>
-                        <span className="hidden text-right font-mono text-[12px] tabular-nums md:block">{money(p.cost)}</span>
+                        <span className="hidden text-right font-mono text-[12px] tabular-nums md:block">{proposedRow ? `~${money(p.build)}` : money(p.cost)}</span>
                         <span className="flex items-center justify-end gap-2 md:justify-start">
-                          <span className={`truncate text-[12px] ${weak ? "text-warn" : "text-ink-soft"}`}>{p.result}</span>
+                          {proposedRow ? (
+                            <Pill tone="accent">{p.result}</Pill>
+                          ) : (
+                            <span className={`truncate text-[12px] ${weak ? "text-warn" : "text-ink-soft"}`}>{p.result}</span>
+                          )}
                         </span>
                       </button>
                     </motion.li>
@@ -391,7 +417,7 @@ function PortfolioApp() {
           </div>
 
           <div className="border-t border-line-soft p-5 lg:border-t-0">
-            <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.14em] text-ink-faint">Three questions, always answered</p>
+            <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.14em] text-ink-faint">Connected to its value</p>
             <Detail item={PORTFOLIO[selected]} />
           </div>
         </div>
@@ -400,20 +426,26 @@ function PortfolioApp() {
   );
 }
 
-export function PlatformScene() {
+const CAPABILITIES = [
+  { title: "Clarify.", body: "Before you build, know why." },
+  { title: "Focus.", body: "Put resources where they matter most." },
+  { title: "Measure.", body: "Check it delivered what you expected." },
+];
+
+export function MeetScene() {
   return (
     <Scene
-      scene={sceneById("platform")}
+      scene={sceneById("meet")}
       layout="stacked"
       center
       className="lg:py-40"
       aside={
-        <div className="flex flex-wrap justify-center gap-2 text-[13px] text-ink-soft">
-          {["Why did we build it?", "How much have we invested?", "What have we gained?"].map((q, i) => (
-            <span key={q} className="inline-flex items-center gap-2 rounded-full border border-line bg-paper/80 px-3.5 py-1.5 backdrop-blur">
-              <span className="font-mono text-[10px] text-accent">0{i + 1}</span>
-              {q}
-            </span>
+        <div className="mx-auto grid max-w-2xl gap-2 text-left sm:grid-cols-3">
+          {CAPABILITIES.map(({ title, body }) => (
+            <div key={title} className="rounded-2xl border border-line bg-paper/80 px-4 py-3 backdrop-blur">
+              <p className="text-[15px] font-semibold text-accent">{title}</p>
+              <p className="mt-0.5 text-[12.5px] leading-snug text-ink-muted">{body}</p>
+            </div>
           ))}
         </div>
       }

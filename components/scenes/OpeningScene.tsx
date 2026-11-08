@@ -294,7 +294,7 @@ export function OpeningScene() {
           transition={{ duration: 0.9, ease, delay: 1.5 }}
           className="mx-auto mt-7 max-w-xl text-pretty text-[17px] leading-relaxed text-ink-muted sm:text-lg"
         >
-          {scene.lede}
+          {scene.narration}
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 14 }}

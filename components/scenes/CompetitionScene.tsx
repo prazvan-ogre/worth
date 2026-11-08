@@ -177,7 +177,7 @@ export function CompetitionScene() {
       scene={sceneById("competition")}
       aside={
         <ul className="space-y-2.5 text-[14px] text-ink-soft">
-          {["Do we already have something similar?", "What problem are we solving?", "What are we putting on hold?"].map((q) => (
+          {["What should we prioritize?", "What should we put on hold?"].map((q) => (
             <li key={q} className="flex items-center gap-3">
               <span className="h-px w-5 bg-accent" />
               {q}
