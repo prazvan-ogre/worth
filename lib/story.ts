@@ -41,6 +41,8 @@ export type Scene = {
   label: string;
   /** Small label above the headline (the part of the story). Empty to hide. */
   eyebrow: string;
+  /** Which side of the story the scene is on; drives the colour coding. */
+  part: "intro" | "problem" | "solution" | "closing";
   headline: string;
   /** On-screen story text for the scene; also the voice-over script for the film. */
   narration: string;
@@ -50,6 +52,7 @@ export const SCENES: Scene[] = [
   // PART 1 — THE PROBLEM
   {
     id: "opening",
+    part: "intro",
     label: "The question",
     eyebrow: "",
     headline: "It’s never been easier to build anything. But is everything worth building?",
@@ -58,6 +61,7 @@ export const SCENES: Scene[] = [
   },
   {
     id: "competition",
+    part: "problem",
     label: "Competing priorities",
     eyebrow: "The problem",
     headline: "Every new idea competes for the same resources.",
@@ -66,6 +70,7 @@ export const SCENES: Scene[] = [
   },
   {
     id: "costs",
+    part: "problem",
     label: "Long-term commitment",
     eyebrow: "The problem",
     headline: "And every launch comes with a long-term commitment.",
@@ -74,6 +79,7 @@ export const SCENES: Scene[] = [
   },
   {
     id: "value",
+    part: "problem",
     label: "Delivered value",
     eyebrow: "The problem",
     headline: "But how much of what we build actually delivers value?",
@@ -83,8 +89,9 @@ export const SCENES: Scene[] = [
   // PART 2 — INTRODUCING WORTH
   {
     id: "meet",
+    part: "solution",
     label: "Meet Worth",
-    eyebrow: "Meet Worth",
+    eyebrow: "Introducing Worth",
     headline: "Make better decisions about what to build, keep, and improve.",
     narration:
       "Meet Worth. A platform that helps teams make better decisions about their ideas, investments, and existing solutions. From deciding what to build, to prioritizing resources and measuring results, Worth connects every initiative to the value it’s expected to deliver.",
@@ -92,6 +99,7 @@ export const SCENES: Scene[] = [
   // PART 3 — HOW WORTH WORKS
   {
     id: "clarify",
+    part: "solution",
     label: "Clarify",
     eyebrow: "How Worth works",
     headline: "Clarify. Before you build, know why.",
@@ -100,6 +108,7 @@ export const SCENES: Scene[] = [
   },
   {
     id: "focus",
+    part: "solution",
     label: "Focus",
     eyebrow: "How Worth works",
     headline: "Focus. Put your resources where they matter most.",
@@ -108,6 +117,7 @@ export const SCENES: Scene[] = [
   },
   {
     id: "measure",
+    part: "solution",
     label: "Measure",
     eyebrow: "How Worth works",
     headline: "Measure. Did it deliver what you expected?",
@@ -117,6 +127,7 @@ export const SCENES: Scene[] = [
   // PART 4 — THE CLOSING MESSAGE
   {
     id: "closing",
+    part: "closing",
     label: "Build only what matters",
     eyebrow: "",
     headline: "Build only what matters.",

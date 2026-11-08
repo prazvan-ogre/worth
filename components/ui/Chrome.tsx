@@ -18,7 +18,7 @@ export function Logo({ className = "" }: { className?: string }) {
         <rect x="1" y="1" width="22" height="22" rx="7" fill="url(#logo-g)" />
         <path d="M6.5 8.5l2.6 7 2.9-6 2.9 6 2.6-7" fill="none" stroke="white" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
-      <span className="text-[15px] font-semibold tracking-tight">{PRODUCT.name}</span>
+      <span className="text-[15px] font-semibold tracking-tight transition-colors duration-300 [[data-dark]_&]:text-paper">{PRODUCT.name}</span>
     </span>
   );
 }
@@ -30,7 +30,7 @@ export function TopBar() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-40">
-      <div aria-hidden className="pointer-events-none absolute inset-0 -bottom-6 bg-gradient-to-b from-canvas via-canvas/85 to-transparent backdrop-blur-[2px] [mask-image:linear-gradient(to_bottom,black_60%,transparent)]" />
+      <div aria-hidden className="pointer-events-none absolute inset-0 -bottom-6 transition-opacity duration-300 [[data-dark]_&]:opacity-0 bg-gradient-to-b from-canvas via-canvas/85 to-transparent backdrop-blur-[2px] [mask-image:linear-gradient(to_bottom,black_60%,transparent)]" />
       <motion.div style={{ scaleX }} className="relative h-[2px] origin-left bg-gradient-to-r from-accent-glow via-accent to-accent-deep" />
       <div className="relative mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
         <button type="button" onClick={() => goTo("opening")} aria-label={`${PRODUCT.name} — back to top`}>
@@ -46,7 +46,7 @@ export function TopBar() {
           </span>
           <a
             href={PRODUCT.bookingUrl}
-            className="group inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-[13px] font-medium text-paper transition-all duration-300 ease-cine hover:bg-accent-deep"
+            className="group inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-[13px] font-medium text-paper transition-all duration-300 ease-cine hover:bg-accent-deep [[data-dark]_&]:bg-paper [[data-dark]_&]:text-ink"
           >
             Let’s talk
             <ArrowUpRight size={14} className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
@@ -63,10 +63,17 @@ export function ChapterNav() {
   return (
     <nav aria-label="Scenes" className="fixed right-6 top-1/2 z-30 hidden -translate-y-1/2 xl:block">
       <ol className="flex flex-col gap-3">
-        {SCENES.map((s) => {
+        {SCENES.map((s, i) => {
           const active = s.id === activeScene;
+          const startsSolution = s.part === "solution" && SCENES[i - 1]?.part !== "solution";
+          const tone =
+            s.part === "problem"
+              ? active ? "bg-warn" : "bg-warn/35 group-hover:bg-warn/70"
+              : s.part === "solution"
+                ? active ? "bg-accent" : "bg-accent/30 group-hover:bg-accent/70"
+                : active ? "bg-ink" : "bg-ink/15 group-hover:bg-ink/40";
           return (
-            <li key={s.id}>
+            <li key={s.id} className={startsSolution ? "mt-5" : undefined}>
               <button
                 type="button"
                 onClick={() => goTo(s.id)}
@@ -82,7 +89,8 @@ export function ChapterNav() {
                 </span>
                 <span
                   className={`block h-1.5 rounded-full transition-all duration-500 ease-cine ${
-                    active ? "w-6 bg-accent" : "w-1.5 bg-ink/15 group-hover:bg-ink/40"
+                    active ? "w-6" : "w-1.5"
+                  } ${tone
                   }`}
                 />
               </button>

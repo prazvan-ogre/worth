@@ -8,6 +8,7 @@ import { OpeningScene } from "@/components/scenes/OpeningScene";
 import { CompetitionScene } from "@/components/scenes/CompetitionScene";
 import { CostsScene } from "@/components/scenes/CostsScene";
 import { ValueScene } from "@/components/scenes/ValueScene";
+import { TurningPoint } from "@/components/scenes/TurningPoint";
 import { MeetScene } from "@/components/scenes/MeetScene";
 import { ClarifyScene } from "@/components/scenes/ClarifyScene";
 import { FocusScene } from "@/components/scenes/FocusScene";
@@ -28,6 +29,7 @@ export function Story() {
             <CompetitionScene />
             <CostsScene />
             <ValueScene />
+            <TurningPoint />
             <MeetScene />
             <ClarifyScene />
             <FocusScene />

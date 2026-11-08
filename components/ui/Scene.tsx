@@ -73,8 +73,11 @@ export function Scene({ scene, children, layout = "split", className = "", aside
         <motion.p
           variants={reveal}
           custom={0}
-          className="mb-5 font-mono text-[11px] uppercase tracking-[0.16em] text-ink-faint"
+          className={`mb-5 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.16em] ${
+            scene.part === "problem" ? "text-warn" : "text-accent"
+          }`}
         >
+          <span className={`h-1.5 w-1.5 rounded-full ${scene.part === "problem" ? "bg-warn" : "bg-accent"}`} />
           {scene.eyebrow}
         </motion.p>
       )}
