@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion, useInView, useScroll, useTransform } from "framer-motion";
 import { ArrowDown, Bot, CornerDownLeft, Inbox, Sparkles } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { WatchFilmButton, useFilm } from "@/components/film/FilmPlayer";
 import { useRegisterScene } from "@/components/ui/Scene";
 import { Pill, Window } from "@/components/ui/primitives";
@@ -266,16 +266,17 @@ export function OpeningScene() {
     >
       <motion.div style={{ y: titleY, opacity: titleOpacity }} className="relative z-10 mx-auto max-w-5xl text-center">
         <h1 id="opening-title" className="text-balance text-display font-semibold">
-          {["It’s", "easy", "to", "build", "anything", "today."].map((w, i) => (
-            <motion.span
-              key={w}
-              initial={{ opacity: 0, y: 40, filter: "blur(12px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: 1, ease, delay: 0.15 + i * 0.07 }}
-              className="inline-block pr-[0.22em]"
-            >
-              {w}
-            </motion.span>
+          {["It’s", "never", "been", "easier", "to", "build", "anything."].map((w, i) => (
+            <Fragment key={w}>
+              <motion.span
+                initial={{ opacity: 0, y: 40, filter: "blur(12px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                transition={{ duration: 1, ease, delay: 0.15 + i * 0.07 }}
+                className="inline-block"
+              >
+                {w}
+              </motion.span>{" "}
+            </Fragment>
           ))}
           <br className="hidden sm:block" />
           <motion.span

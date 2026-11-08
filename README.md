@@ -16,7 +16,7 @@ npm run build && npm start
 
 | # | Scene | Visual |
 |---|---|---|
-| 1 | It’s easy to build anything today… | A prompt types itself, becomes a live app, an AI agent spins up, features burst around it |
+| 1 | It’s never been easier to build anything… | A prompt types itself, becomes a live app, an AI agent spins up, features burst around it |
 | 2 | Every new idea competes for the same resources | A shared backlog that keeps re-ordering; duplicates flagged, work put on hold, capacity meters near 100% |
 | 3 | The costs don’t stop at launch | Cost-of-ownership chart: build cost, then stacked running costs (tokens, cloud, subscriptions, support, maintenance) |
 | 4 | More features don’t automatically mean more value | Analytics: shipped features ×4 vs. flat usage (“the value gap”) and an idle agent still costing money |

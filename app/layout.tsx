@@ -6,7 +6,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Worth — Build what matters",
   description:
-    "It’s easy to build anything today. Worth helps teams decide what is worth building, track the real cost of AI initiatives, and measure whether they deliver value.",
+    "It’s never been easier to build anything. Worth helps teams decide what is worth building, track the real cost of AI initiatives, and measure whether they deliver value.",
   openGraph: {
     title: "Worth — Build what matters",
     description: "Decide what is worth building. Track what it costs. Measure what it delivers.",

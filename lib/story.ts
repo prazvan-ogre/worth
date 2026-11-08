@@ -51,7 +51,7 @@ export const SCENES: Scene[] = [
     id: "opening",
     label: "The question",
     eyebrow: "",
-    headline: "It’s easy to build anything today. But is everything worth building?",
+    headline: "It’s never been easier to build anything. But is everything worth building?",
     lede: "Ideas become apps, agents and features in an afternoon. Choosing which ones deserve to exist is the hard part now.",
     narration:
       "With AI, ideas can quickly become apps, agents, and features. We can experiment more and build faster. But how do we choose what deserves our time, attention, and budget?",
