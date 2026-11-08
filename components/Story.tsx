@@ -11,6 +11,7 @@ import { ValueScene } from "@/components/scenes/ValueScene";
 import { MeetScene } from "@/components/scenes/MeetScene";
 import { ClarifyScene } from "@/components/scenes/ClarifyScene";
 import { FocusScene } from "@/components/scenes/FocusScene";
+import { FocusedPortfolio } from "@/components/scenes/FocusedPortfolio";
 import { MeasureScene } from "@/components/scenes/MeasureScene";
 import { ClosingScene } from "@/components/scenes/ClosingScene";
 
@@ -30,6 +31,7 @@ export function Story() {
             <MeetScene />
             <ClarifyScene />
             <FocusScene />
+            <FocusedPortfolio />
             <MeasureScene />
             <ClosingScene />
           </main>
