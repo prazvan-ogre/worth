@@ -73,9 +73,9 @@ export const SCENES: Scene[] = [
     part: "problem",
     label: "Long-term commitment",
     eyebrow: "The problem",
-    headline: "And every launch comes with a long-term commitment.",
+    headline: "Every launch comes with a long-term commitment.",
     narration:
-      "And the investment doesn’t end when we launch. Every app, agent, or feature needs resources to keep running. Infrastructure, AI tokens, maintenance, and support. The more we build, the more we commit to maintaining.",
+      "The investment doesn’t end when we launch. Every app, agent, or feature needs resources to keep running. Infrastructure, AI tokens, maintenance, and support. The more we build, the more we commit to maintaining.",
   },
   {
     id: "value",

@@ -18,7 +18,7 @@ npm run build && npm start
 |---|---|---|
 | The problem | It’s never been easier to build anything. But is everything worth building? | A prompt becomes a live app, an AI agent spins up, features burst around it |
 | | Every new idea competes for the same resources. | A shared backlog that keeps re-ordering; new work jumps the queue, other work is put on hold |
-| | And every launch comes with a long-term commitment. | One launch’s running costs (tokens, cloud, subscriptions, support, maintenance), then more launches piling up |
+| | Every launch comes with a long-term commitment. | One launch’s running costs (tokens, cloud, subscriptions, support, maintenance), then more launches piling up |
 | | But how much of what we build actually delivers value? | Features shipped ×4 against flat usage, and an idle agent that still costs money |
 | Introducing Worth | Meet Worth — make better decisions about what to build, keep, and improve. | The portfolio inside Worth: proposed and live apps, agents and features with goals, owners, costs and outcomes; Clarify · Focus · Measure |
 | How Worth works | Clarify. Before you build, know why. | Idea → problem, solution, outcome, effort → similar work to reuse → proposal ready for evaluation |
